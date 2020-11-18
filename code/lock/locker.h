@@ -1,7 +1,7 @@
 /*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-17 14:38:47
- * @LastEditTime: 2020-11-18 10:56:00
+ * @LastEditTime: 2020-11-18 15:09:48
  * @LastEditors: Please set LastEditors
  * @Description: 封装3种线程同步机制：信号量、互斥锁、条件变量
  * @FilePath: \MiniWebServer\lock\locker.h
@@ -16,7 +16,7 @@
 #include "../show_errno/show_errno.h"
 
 /*
- * 封窗信号量的类
+ * 封装信号量的类
  * sem_init函数用于初始化一个未命名的信号量
  * sem_destory函数用于销毁信号量
  * sem_wait函数将以原子操作方式将信号量减一,信号量为0时,sem_wait阻塞
@@ -39,7 +39,7 @@ public:
 };
 
 /*
- *封装互斥锁的类
+ * 封装互斥锁的类
  * pthread_mutex_init函数用于初始化互斥锁
  * pthread_mutex_destory函数用于销毁互斥锁
  * pthread_mutex_lock函数以原子操作方式给互斥锁加锁

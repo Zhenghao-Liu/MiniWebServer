@@ -1,9 +1,9 @@
 /*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-18 10:32:21
- * @LastEditTime: 2020-11-18 11:01:10
+ * @LastEditTime: 2020-11-18 15:15:27
  * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
+ * @Description: 日志实现文件
  * @FilePath: \MiniWebServer\code\log\log.cpp
  */
 
@@ -15,7 +15,7 @@
 #include <pthread.h>
 using namespace std;
 
-Log : Log()
+Log::Log()
 {
     m_count = 0;
     m_is_async = false;

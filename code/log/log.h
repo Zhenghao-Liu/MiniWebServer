@@ -1,9 +1,9 @@
 /*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-18 09:59:17
- * @LastEditTime: 2020-11-18 10:55:50
+ * @LastEditTime: 2020-11-18 11:03:56
  * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
+ * @Description: 日志头文件
  * @FilePath: \MiniWebServer\log\log.h
  */
 
