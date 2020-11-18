@@ -1,7 +1,7 @@
 /*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-17 17:01:12
- * @LastEditTime: 2020-11-17 19:55:04
+ * @LastEditTime: 2020-11-18 09:46:07
  * @LastEditors: Please set LastEditors
  * @Description: 循环队列
  * @FilePath: \MiniWebServer\log\block_queue.h
@@ -28,7 +28,7 @@ using namespace std;
    m_size 队列当前实际使用大小
    m_max_size 队列最大容量
    m_front 指向队列的头指针
-   m_back 指向队列的尾指针，采取左开右闭(m_front,m_back]
+   m_back 指向队列的尾指针，采取左闭右闭[m_front,m_back]
  * m_back = (m_back + 1) % m_max_size; 将事件增加到队尾
  * 
  */
@@ -143,7 +143,13 @@ public:
             m_mutex.unlock();
             return false;
         }
-        m_back=(m_back+1)%m_max_size;
+        if (m_back==-1 && m_front==-1)
+        {
+            m_back=0;
+            m_front=0;
+        }
+        else
+            m_back=(m_back+1)%m_max_size;
         m_array[m_back]=in_elem;
         ++m_size;
         m_cond.broadcast();
@@ -159,8 +165,8 @@ public:
                 m_mutex.unlock();
                 return false;
             }
-        m_front=(m_front+1)%m_max_size;
         out_elem=m_array[m_front];
+        m_front=(m_front+1)%m_max_size;
         --m_size;
         m_mutex.unlock();
         return true;
@@ -186,8 +192,8 @@ public:
             m_mutex.unlock();
             return false;
         }
-        m_front=(m_front+1)%m_max_size;
         out_elem=m_array[m_front];
+        m_front=(m_front+1)%m_max_size;
         --m_size;
         m_mutex.unlock();
         return true;
