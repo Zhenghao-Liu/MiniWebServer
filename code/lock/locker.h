@@ -1,7 +1,7 @@
 /*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-17 14:38:47
- * @LastEditTime: 2020-11-17 16:14:00
+ * @LastEditTime: 2020-11-18 10:56:00
  * @LastEditors: Please set LastEditors
  * @Description: 封装3种线程同步机制：信号量、互斥锁、条件变量
  * @FilePath: \MiniWebServer\lock\locker.h
@@ -26,15 +26,16 @@ class sem
 {
 private:
     sem_t m_sem;
+
 public:
-    sem(int num=0)
+    sem(int num = 0)
     {
-        if (sem_init(&m_sem,0,num)!=0)
+        if (sem_init(&m_sem, 0, num) != 0)
             show_errno();
     }
-    ~sem(){sem_destroy(&m_sem);}
-    bool wait(){return sem_wait(&m_sem)==0;}
-    bool post(){return sem_post(&m_sem)==0;}
+    ~sem() { sem_destroy(&m_sem); }
+    bool wait() { return sem_wait(&m_sem) == 0; }
+    bool post() { return sem_post(&m_sem) == 0; }
 };
 
 /*
@@ -48,16 +49,17 @@ class locker
 {
 private:
     pthread_mutex_t m_mutex;
+
 public:
     locker()
     {
-        if (pthread_mutex_init(&m_mutex,NULL)!=0)
+        if (pthread_mutex_init(&m_mutex, NULL) != 0)
             show_errno();
     }
-    ~locker(){pthread_mutex_destroy(&m_mutex);}
-    bool lock(){return pthread_mutex_lock(&m_mutex)==0;}
-    bool unlock(){return pthread_mutex_unlock(&m_mutex)==0;}
-    pthread_mutex_t* get(){return &m_mutex;}
+    ~locker() { pthread_mutex_destroy(&m_mutex); }
+    bool lock() { return pthread_mutex_lock(&m_mutex) == 0; }
+    bool unlock() { return pthread_mutex_unlock(&m_mutex) == 0; }
+    pthread_mutex_t *get() { return &m_mutex; }
 };
 
 /*
@@ -77,12 +79,13 @@ class cond
 private:
     //pthread_mutex_t m_mutex;
     pthread_cond_t m_cond;
+
 public:
     cond()
     {
         // if (pthread_mutex_init(&m_mutex,NULL)!=0)
         //     show_errno();
-        if (pthread_cond_init(&m_cond,NULL)!=0)
+        if (pthread_cond_init(&m_cond, NULL) != 0)
         {
             // pthread_mutex_destroy(&m_mutex);
             show_errno();
@@ -101,25 +104,24 @@ public:
      * 但是涉及到pthread_mutex_t的属性type还有别的类型的锁
      * 只能将安全性结果交给函数外保证
      */
-    bool wait(pthread_mutex_t* m_mutex)
+    bool wait(pthread_mutex_t *m_mutex)
     {
-        int ans=0;
+        int ans = 0;
         // pthread_mutex_lock(&m_mutex);
-        ans=pthread_cond_wait(&m_cond,m_mutex);
+        ans = pthread_cond_wait(&m_cond, m_mutex);
         // pthread_mutex_unlock(&m_mutex);
-        retrun ans==0;
+        retrun ans == 0;
     }
     bool timewait(pthread_mutex_t *m_mutex, struct timespec t)
     {
-        int ans=0;
+        int ans = 0;
         //pthread_mutex_lock(&m_mutex);
-        ans=pthread_cond_timedwait(&m_cond,m_mutex,&t);
+        ans = pthread_cond_timedwait(&m_cond, m_mutex, &t);
         //pthread_mutex_unlock(&m_mutex);
-        return ans==0;
+        return ans == 0;
     }
-    bool signal(){return pthread_cond_signal(&m_cond)==0;}
-    bool broadcast(){return pthread_cond_broadcast(&m_cond)==0;}
+    bool signal() { return pthread_cond_signal(&m_cond) == 0; }
+    bool broadcast() { return pthread_cond_broadcast(&m_cond) == 0; }
 };
-
 
 #endif

@@ -1,7 +1,7 @@
 /*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-17 17:01:12
- * @LastEditTime: 2020-11-18 09:46:07
+ * @LastEditTime: 2020-11-18 09:57:11
  * @LastEditors: Please set LastEditors
  * @Description: 循环队列
  * @FilePath: \MiniWebServer\log\block_queue.h
@@ -180,7 +180,7 @@ public:
         if (m_size<=0)
         {
             t.tv_sec=now.tv_sec+ms_timeout/1000;
-            t.tv_nsec=(ms_timeout%1000)*1000;
+            t.tv_nsec=(now.tv_usec+(ms_timeout%1000)*1000)*1000;
             if (!m_cond.timewait(m_mutex.get(),t))
             {
                 m_mutex.unlock();
