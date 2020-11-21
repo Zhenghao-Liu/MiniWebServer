@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-18 11:06:18
  * @LastEditTime: 2020-11-18 15:08:32
@@ -50,8 +50,8 @@ private:
     locker lock;
     list<MYSQL *> connList;
     sem reserve;
-    continue_pool();
-    ~continue_pool();
+    connection_pool();
+    ~connection_pool();
 
 public:
     string m_url;
@@ -65,18 +65,18 @@ public:
     int GetFreeConn();
     void DestroyPool();
     static connection_pool *GetInstance();
-    void init(string url, strign User, string PassWord, string DataBaseName, int Port, int MaxConn, int close_log);
+    void init(string url, string User, string PassWord, string DataBaseName, int Port, int MaxConn, int close_log);
 };
 
 /*
  * 采用RAII封装数据库连接池
  * RAII：是使用一个对象，在其构造时获取资源，在对象生命期控制对资源的访问使之始终保持有效，最后在对象析构的时候释放资源
  */
-clsss connectionRAII
+class connectionRAII
 {
 private:
-    MYSQL *connRaii;
-    connection_pool *poolRAii;
+    MYSQL *conRAII;
+    connection_pool *poolRAII;
 
 public:
     connectionRAII(MYSQL * *con, connection_pool * connPool);

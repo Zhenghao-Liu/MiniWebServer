@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-17 14:38:47
  * @LastEditTime: 2020-11-18 15:09:48
@@ -12,8 +12,8 @@
 
 #include <pthread.h>
 #include <semaphore.h>
+#include <exception>
 #include <time.h>
-#include "../show_errno/show_errno.h"
 
 /*
  * 封装信号量的类
@@ -31,7 +31,7 @@ public:
     sem(int num = 0)
     {
         if (sem_init(&m_sem, 0, num) != 0)
-            show_errno();
+            throw std::exception();
     }
     ~sem() { sem_destroy(&m_sem); }
     bool wait() { return sem_wait(&m_sem) == 0; }
@@ -54,7 +54,7 @@ public:
     locker()
     {
         if (pthread_mutex_init(&m_mutex, NULL) != 0)
-            show_errno();
+            throw std::exception();
     }
     ~locker() { pthread_mutex_destroy(&m_mutex); }
     bool lock() { return pthread_mutex_lock(&m_mutex) == 0; }
@@ -84,11 +84,11 @@ public:
     cond()
     {
         // if (pthread_mutex_init(&m_mutex,NULL)!=0)
-        //     show_errno();
+        //     throw std::exception();
         if (pthread_cond_init(&m_cond, NULL) != 0)
         {
             // pthread_mutex_destroy(&m_mutex);
-            show_errno();
+            throw std::exception();
         }
     }
     ~cond()
@@ -110,7 +110,7 @@ public:
         // pthread_mutex_lock(&m_mutex);
         ans = pthread_cond_wait(&m_cond, m_mutex);
         // pthread_mutex_unlock(&m_mutex);
-        retrun ans == 0;
+        return ans == 0;
     }
     bool timewait(pthread_mutex_t *m_mutex, struct timespec t)
     {

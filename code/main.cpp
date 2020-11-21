@@ -1,19 +1,24 @@
-/*
+﻿/*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-19 20:48:31
- * @LastEditTime: 2020-11-19 20:51:51
+ * @LastEditTime: 2020-11-21 14:59:59
  * @LastEditors: Please set LastEditors
  * @Description: 主函数
  * @FilePath: \MiniWebServer\code\main.cpp
  */
 
 #include "config.h"
+#include <unistd.h>
 int main(int argc, char *argv[])
 {
+
+    //将下句代码取消注释即可将此程序以守护进程运行
+    //daemon(1,0);
+
     //需要修改的数据库信息,登录名,密码,库名
     string user = "root";
     string passwd = "root";
-    string databasename = "qgydb";
+    string databasename = "yourdb";
 
     //命令行解析
     Config config;

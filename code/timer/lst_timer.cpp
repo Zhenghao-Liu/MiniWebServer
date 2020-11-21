@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-18 20:53:50
  * @LastEditTime: 2020-11-18 21:24:52
@@ -168,6 +168,16 @@ void Utils::addfd(int epollfd, int fd, bool one_shot, int TRIGMode)
     setnonblocking(fd);
 }
 
+//信号处理函数
+void Utils::sig_handler(int sig)
+{
+    //为保证函数的可重入性，保留原来的errno
+    int save_errno = errno;
+    int msg = sig;
+    send(u_pipefd[1], (char *)&msg, 1, 0);
+    errno = save_errno;
+}
+
 void Utils::addsig(int sig, void(handler)(int), bool restart)
 {
     struct sigaction sa;
@@ -177,12 +187,6 @@ void Utils::addsig(int sig, void(handler)(int), bool restart)
         sa.sa_flags |= SA_RESTART;
     sigfillset(&sa.sa_mask);
     assert(sigaction(sig, &sa, NULL) != -1);
-}
-
-void Utils::timer_handler()
-{
-    m_timer_lst.tick();
-    alarm(m_TIMESLOT);
 }
 
 void Utils::timer_handler()

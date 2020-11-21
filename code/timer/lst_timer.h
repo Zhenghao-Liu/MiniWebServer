@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-18 16:41:12
  * @LastEditTime: 2020-11-18 21:25:46
@@ -128,7 +128,7 @@ public:
     static void sig_handler(int sig);
     void addsig(int sig, void(handle)(int), bool restart = true);
     void timer_handler();
-    void show_error(int connfd, cost char *info);
+    void show_error(int connfd, const char *info);
 };
 
 //定时器回调函数

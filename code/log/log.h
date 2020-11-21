@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-18 09:59:17
  * @LastEditTime: 2020-11-18 11:03:56
@@ -6,6 +6,9 @@
  * @Description: 日志头文件
  * @FilePath: \MiniWebServer\log\log.h
  */
+
+#ifndef LOG_H
+#define LOG_H
 
 #include <stdio.h>
 #include <iostream>
@@ -65,7 +68,7 @@ private:
 public:
     static Log *get_instance()
     {
-        static Log instance();
+        static Log instance;
         return &instance;
     }
     static void *flush_log_thread(void *args) { Log::get_instance()->async_write_log(); }

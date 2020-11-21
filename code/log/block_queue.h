@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-17 17:01:12
  * @LastEditTime: 2020-11-18 09:57:11
@@ -199,3 +199,5 @@ public:
         return true;
     }
 };
+
+#endif

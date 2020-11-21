@@ -1,4 +1,4 @@
-/*
+﻿/*
  * @Author: Zhenghao-Liu
  * @Date: 2020-11-18 14:33:52
  * @LastEditTime: 2020-11-18 15:18:19
@@ -20,8 +20,8 @@ using namespace std;
 
 connection_pool::connection_pool()
 {
-    m_CurCoon = 0;
-    m_FreeCoon = 0;
+    m_CurConn = 0;
+    m_FreeConn = 0;
 }
 
 connection_pool *connection_pool::GetInstance()
@@ -30,8 +30,14 @@ connection_pool *connection_pool::GetInstance()
     return &connPool;
 }
 
-void connection_pool::init(string url, strign User, string PassWord, string DataBaseName, int Port, int MaxConn, int close_log) : m_url(rul), m_Port(Port), m_User(User), m_PassWord(PassWord), m_DatabaseName(DataBaseName), m_close_log(close_log)
+void connection_pool::init(string url, string User, string PassWord, string DataBaseName, int Port, int MaxConn, int close_log)
 {
+    m_url = url;
+    m_Port = Port;
+    m_User = User;
+    m_PassWord = PassWord;
+    m_DatabaseName = DataBaseName;
+    m_close_log = close_log;
     for (int i = 0; i < MaxConn; ++i)
     {
         MYSQL *con = NULL;
@@ -42,7 +48,7 @@ void connection_pool::init(string url, strign User, string PassWord, string Data
             exit(EXIT_FAILURE);
         }
         con = mysql_real_connect(con, url.c_str(), User.c_str(), PassWord.c_str(), DataBaseName.c_str(), Port, NULL, 0);
-        if (conn == NULL)
+        if (con == NULL)
         {
             LOG_ERROR("MySQL Errot");
             exit(EXIT_FAILURE);
@@ -69,7 +75,7 @@ MYSQL *connection_pool::GetConnection()
     return con;
 }
 
-bool connection_pool::RealeaseConnection(MYSQL *con)
+bool connection_pool::ReleaseConnection(MYSQL *con)
 {
     if (con == NULL)
         return false;
@@ -78,7 +84,7 @@ bool connection_pool::RealeaseConnection(MYSQL *con)
     ++m_FreeConn;
     --m_CurConn;
     lock.unlock();
-    revese.post();
+    reserve.post();
     return true;
 }
 
@@ -108,7 +114,7 @@ connection_pool::~connection_pool() { DestroyPool(); }
 connectionRAII::connectionRAII(MYSQL **SQL, connection_pool *connPool)
 {
     *SQL = connPool->GetConnection();
-    connRAII = *SQL;
+    conRAII = *SQL;
     poolRAII = connPool;
 }
 
